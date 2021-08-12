@@ -45,7 +45,7 @@ object Command {
     }
     else if (ECHO.equals(tokens(0))) {
       if (tokens.length < 2) incompleteCommand(ECHO)
-      else new Echo(tokens.tail.toList)
+      else new Echo(tokens.tail)
     }
     else new UnknownCommand
   }
