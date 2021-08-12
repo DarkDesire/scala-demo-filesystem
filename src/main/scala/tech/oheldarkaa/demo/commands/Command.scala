@@ -24,7 +24,7 @@ object Command {
   def from(input: String): Command = {
     val tokens: Array[String] = input.split(" ").filter(_.nonEmpty)
 
-    println(s"tokens:${tokens.zipWithIndex.map(_.swap).mkString}")
+    //println(s"tokens:${tokens.zipWithIndex.map(_.swap).mkString}")
     if (input.isEmpty | tokens.isEmpty) noCommand
     else tokens(0) match {
       case MKDIR =>
