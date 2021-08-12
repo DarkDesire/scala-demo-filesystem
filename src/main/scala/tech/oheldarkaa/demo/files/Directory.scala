@@ -1,12 +1,14 @@
 package tech.oheldarkaa.demo.files
 
+import tech.oheldarkaa.demo.filesystem.FilesystemException
+
 import scala.annotation.tailrec
 
 object Directory {
   val SEPARATOR = "/"
   val ROOT_PATH = "/"
 
-  def ROOT: Directory = Directory.empty("","")
+  def ROOT: Directory = Directory.empty("", "")
 
   def empty(parentPath: String, name: String) =
     new Directory(parentPath, name, List())
@@ -24,11 +26,14 @@ class Directory(override val parentPath: String,
       else if (contentList.head.name.equals(name)) contentList.head
       else findEntryHelper(name, contentList.tail)
     }
+
     findEntryHelper(entryName, contents)
   }
+
   def hasEntry(name: String): Boolean = findEntry(name) != null
+
   def getAllFoldersInPath: List[String] =
-    // /a/b/c/d => a/b/c/d => List("a","b","c","d")
+  // /a/b/c/d => a/b/c/d => List("a","b","c","d")
     path.substring(1).split(Directory.SEPARATOR).toList.filter(x => x.nonEmpty)
 
   def findDescendant(path: List[String]): Directory = {
@@ -36,10 +41,16 @@ class Directory(override val parentPath: String,
     else findEntry(path.head).asDirectory
       .findDescendant(path.tail)
   }
+
   def addEntry(newEntry: DirEntry): Directory =
     new Directory(parentPath, name, contents :+ newEntry)
+
   def replaceEntry(entryName: String, newEntry: DirEntry): Directory =
     new Directory(parentPath, name, contents.filter(e => !e.name.equals(entryName)) :+ newEntry)
+
+  def asFile: File = throw new FilesystemException("A directory cannot be converted to File")
+
   def asDirectory: Directory = this
+
   def getType: String = "Directory"
 }

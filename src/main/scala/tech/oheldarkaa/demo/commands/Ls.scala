@@ -11,6 +11,7 @@ class Ls extends Command {
       entry.name + "[" + entry.getType + "]\n" + createNiceOutput(contents.tail)
     }
   }
+
   def apply(state: State): State = {
     val contents = state.wd.contents
     val niceOutput = createNiceOutput(contents)
