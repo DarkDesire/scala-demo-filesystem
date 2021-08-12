@@ -7,6 +7,7 @@ object Command {
   val LS = "ls"
   val PWD = "pwd"
   val TOUCH = "touch"
+  val CD = "cd"
 
   def noCommand: Command =
     (state: State) => state.setMessage("Type any command.")
@@ -18,7 +19,7 @@ object Command {
     (state: State) => state.setMessage(name + ": Incomplete command!")
 
   def from(input: String): Command = {
-    val tokens: Array[String] = input.split("\\W+").filter(_.nonEmpty)
+    val tokens: Array[String] = input.split(" ").filter(_.nonEmpty)
 
     println(s"tokens:${tokens.zipWithIndex.map(_.swap).mkString}")
     if (tokens.isEmpty) noCommand
@@ -31,6 +32,10 @@ object Command {
     else if (TOUCH.equals(tokens(0))) {
       if (tokens.length < 2) incompleteCommand(MKDIR)
       else new Touch(tokens(1))
+    }
+    else if (CD.equals(tokens(0))) {
+      if (tokens.length < 2) incompleteCommand(CD)
+      else new Cd(tokens(1))
     }
     else new UnknownCommand
   }
