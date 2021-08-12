@@ -18,7 +18,8 @@ class Cd(dir: String) extends Command {
 
     // 2. find the abs path of the dir I want to CD to
     val absolutePath = {
-      if (dir.startsWith(Directory.SEPARATOR)) dir
+      if (dir.startsWith("~")) Directory.ROOT_PATH
+      else if (dir.startsWith(Directory.SEPARATOR)) dir
       else if (wd.isRoot) wd.path + dir
       else wd.path + Directory.SEPARATOR + dir
     }
